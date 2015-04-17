@@ -3,6 +3,8 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class Authentication : MonoBehaviour {
+	public static string Token;
+
 	private string authUrl = "http://127.0.0.1:8580/auth/";
 	private string signupUrl = "http://127.0.0.1:8580/signup/";
 
@@ -61,10 +63,11 @@ public class Authentication : MonoBehaviour {
 		yield return www;
 		if(www.error == null) {
 			Debug.Log("Success: " + www.text);
-			var pattern = "\"access_token\":\"(?<token>[A-Za-z0-9\\.=]+)\"";
+			var pattern = "\"access_token\":\"(?<token>[A-Za-z0-9\\.=_]+)\"";
 			var match = System.Text.RegularExpressions.Regex.Match(www.text, pattern);
-			var token = match.Groups["token"].Value;
-			Debug.Log(token);
+			Token = match.Groups["token"].Value;
+			Application.LoadLevel("FirstScene");
+			Debug.Log(Token);
 		} else {
 			Debug.LogError("Error: " + www.error);
 		}
@@ -83,6 +86,7 @@ public class Authentication : MonoBehaviour {
 		yield return www;
 		if(www.error == null) {
 			Debug.Log("Success: " + www.text);
+			StartCoroutine(AuthenticateAsync(username, password));
 		} else {
 			Debug.LogError("Error: " + www.error);
 		}
