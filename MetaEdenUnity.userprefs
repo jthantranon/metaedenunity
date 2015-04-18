@@ -1,9 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/GameNetwork.cs">
     <Files>
-      <File FileName="Assets/Scripts/Authentication.cs" Line="66" Column="62" />
-      <File FileName="Assets/Scripts/GameNetwork.cs" Line="100" Column="44" />
+      <File FileName="Assets/Scripts/Authentication.cs" Line="66" Column="38" />
+      <File FileName="Assets/Scripts/GameNetwork.cs" Line="95" Column="45" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

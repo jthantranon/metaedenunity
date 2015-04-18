@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using Pathfinding.Serialization.JsonFx;
 
 public class GameNetwork : MonoBehaviour {
 	private static readonly string PingMessage = "{\"messageType\":\"ping\"}";
@@ -14,11 +16,15 @@ public class GameNetwork : MonoBehaviour {
 	private StringBuilder stringBuilder = new StringBuilder();
 	private String response = String.Empty;
 	private float pingTimer = PingInterval;
-	private bool connected;
 	private Coroutine receiveCoroutine;
 
+	
 	public string hostname;
 	public int port;
+
+	public Queue<IDictionary<string, object>> MessageQueue = new Queue<IDictionary<string, object>>();
+	public event EventHandler OnConnected;
+	public bool IsConnected;
 
 	void Start () {
 		StartCoroutine(ConnectAsync());
@@ -34,7 +40,7 @@ public class GameNetwork : MonoBehaviour {
 
 	void OnDestroy()
 	{
-		connected = false;
+		IsConnected = false;
 		StopCoroutine(receiveCoroutine);
 		client.Shutdown(SocketShutdown.Both);
 		client.Close();
@@ -56,8 +62,11 @@ public class GameNetwork : MonoBehaviour {
 		try
 		{
 			client.EndConnect(result);
-			connected = true;
-			SendAuthenticationMessage();
+			IsConnected = true;
+			if(OnConnected != null) 
+			{
+				OnConnected(this, new EventArgs());
+			}
 			receiveCoroutine = StartCoroutine(ReceiveAsync());
 		}
 		catch(Exception e) 
@@ -68,7 +77,7 @@ public class GameNetwork : MonoBehaviour {
 
 	private IEnumerator ReceiveAsync()
 	{
-		while(connected) {
+		while(IsConnected) {
 			var buffer = new byte[BufferSize];
 			var result = client.BeginReceive(buffer, 0, BufferSize, 0, null, null);
 			while(!result.IsCompleted) {
@@ -82,25 +91,25 @@ public class GameNetwork : MonoBehaviour {
 					if (stringBuilder.Length > 1) {
 						response = stringBuilder.ToString();
 					}
-					Debug.Log("Response received: " + response);
-					//TODO: parse the response JSON and add to the processing queue
 					stringBuilder.Remove(0, stringBuilder.Length);
+					Debug.Log(response);
+					var jsonReader = new JsonReader(response, new JsonReaderSettings());
+					var resp = jsonReader.Deserialize();
+					var responseObjects = resp as object[];
+					foreach(IDictionary<string, object> responseObject in responseObjects)
+					{
+						if((responseObject["messageType"] as string) != "pong") {
+							MessageQueue.Enqueue(responseObject);
+						} else {
+							Debug.Log("Ping message!");
+						}
+					}
 				}
 			} 
 		}
 	}
 	
-	private void SendAuthenticationMessage()
-	{
-		Send ("{\"messageType\":\"authenticate\", \"token\":\""+(Authentication.Token)+"\"}");
-	}
-
-	private void SendCharacterListRequest()
-	{
-		Send ("{\"messageType\":\"characterList\"}");
-	}
-	
-	private  void Send(String data) {
+	public  void Send(String data) {
 		var byteData = Encoding.ASCII.GetBytes(data);
 		client.BeginSend(byteData, 0, byteData.Length, 0, SendCallback, client);
 	}

@@ -56,9 +56,13 @@
      <Compile Include="Assets\Scripts\InteractionArea.cs" />
      <Compile Include="Assets\Scripts\Items.cs" />
      <Compile Include="Assets\Scripts\KeyboardMouseInput.cs" />
+     <Compile Include="Assets\Scripts\NetworkMessageHandler.cs" />
      <Compile Include="Assets\Scripts\PlayerController.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
+ </Reference>
+ <Reference Include="Pathfinding.JsonFx">
+ <HintPath>/Users/zaparker/Projects/Unity/MetaEdenUnity/Assets/Libraries/Pathfinding.JsonFx.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

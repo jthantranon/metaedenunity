@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Authentication : MonoBehaviour {
 	public static string Token;
@@ -13,12 +14,18 @@ public class Authentication : MonoBehaviour {
 
 	public InputField authUsernameField;
 	public InputField authPasswordField;
+	public Text authError;
 
 	public InputField signUpUsernameField;
 	public InputField signUpPasswordField;
 	public InputField signUpFirstNameField;
 	public InputField signUpLastNameField;
 	public InputField signUpEmailField;
+
+	void Start()
+	{
+		authError.gameObject.SetActive(false);
+	}
 
 	public void SwitchToSignup()
 	{
@@ -63,12 +70,15 @@ public class Authentication : MonoBehaviour {
 		yield return www;
 		if(www.error == null) {
 			Debug.Log("Success: " + www.text);
-			var pattern = "\"access_token\":\"(?<token>[A-Za-z0-9\\.=_]+)\"";
-			var match = System.Text.RegularExpressions.Regex.Match(www.text, pattern);
-			Token = match.Groups["token"].Value;
+			var settings2 = new Pathfinding.Serialization.JsonFx.JsonReaderSettings();
+			var reader = new Pathfinding.Serialization.JsonFx.JsonReader(www.text, settings2);
+			var resultObject = reader.Deserialize() as IDictionary<string, object>;
+			Token = resultObject["access_token"] as string;
 			Application.LoadLevel("FirstScene");
 			Debug.Log(Token);
+			authError.gameObject.SetActive(false);
 		} else {
+			authError.gameObject.SetActive(true);
 			Debug.LogError("Error: " + www.error);
 		}
 	}
