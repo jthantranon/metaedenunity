@@ -12,22 +12,26 @@ public class GameNetwork : MonoBehaviour {
 	private static readonly float PingInterval = 2f;
 	private static readonly int BufferSize = 1024;
 
-	private Socket client;
+	private static Socket client;
+
+	public static Queue<IDictionary<string, object>> MessageQueue = new Queue<IDictionary<string, object>>();
+	public static bool IsConnected;
+	public static bool IsPolling;
+	public static event EventHandler Connected;
+
 	private StringBuilder stringBuilder = new StringBuilder();
 	private String response = String.Empty;
 	private float pingTimer = PingInterval;
 	private Coroutine receiveCoroutine;
 
-	
 	public string hostname;
 	public int port;
 
-	public Queue<IDictionary<string, object>> MessageQueue = new Queue<IDictionary<string, object>>();
-	public event EventHandler OnConnected;
-	public bool IsConnected;
 
 	void Start () {
-		StartCoroutine(ConnectAsync());
+		if(!IsConnected) {
+			StartCoroutine(ConnectAsync());
+		}
 	}
 
 	void Update () {
@@ -40,14 +44,19 @@ public class GameNetwork : MonoBehaviour {
 
 	void OnDestroy()
 	{
+		Debug.Log("Destroying connection");
 		IsConnected = false;
-		StopCoroutine(receiveCoroutine);
+		IsPolling = false;
+		if(receiveCoroutine != null) {
+			StopCoroutine(receiveCoroutine);
+		}
 		client.Shutdown(SocketShutdown.Both);
 		client.Close();
 	}
 
 	private IEnumerator ConnectAsync()
 	{
+		Debug.Log("Connecting");
 		var ipHostInfo = Dns.GetHostEntry(hostname);
 		var ipAddress = ipHostInfo.AddressList[0];
 		var remoteEP = new IPEndPoint(ipAddress, port);
@@ -61,13 +70,10 @@ public class GameNetwork : MonoBehaviour {
 		}
 		try
 		{
+			Debug.Log("Connected");
 			client.EndConnect(result);
-			IsConnected = true;
-			if(OnConnected != null) 
-			{
-				OnConnected(this, new EventArgs());
-			}
 			receiveCoroutine = StartCoroutine(ReceiveAsync());
+			SendAuthenticationMessage();
 		}
 		catch(Exception e) 
 		{
@@ -77,14 +83,14 @@ public class GameNetwork : MonoBehaviour {
 
 	private IEnumerator ReceiveAsync()
 	{
-		while(IsConnected) {
+		IsPolling = true;
+		while(IsPolling) {
 			var buffer = new byte[BufferSize];
 			var result = client.BeginReceive(buffer, 0, BufferSize, 0, null, null);
 			while(!result.IsCompleted) {
 				yield return null;
 			}
 			var bytesRead = client.EndReceive(result);
-			
 			if (bytesRead > 0) {
 				stringBuilder.Append(Encoding.ASCII.GetString(buffer, 0, bytesRead));
 				if(bytesRead < BufferSize) {
@@ -98,10 +104,18 @@ public class GameNetwork : MonoBehaviour {
 					var responseObjects = resp as object[];
 					foreach(IDictionary<string, object> responseObject in responseObjects)
 					{
-						if((responseObject["messageType"] as string) != "pong") {
-							MessageQueue.Enqueue(responseObject);
-						} else {
+						if((responseObject["messageType"] as string) == "pong") {
 							Debug.Log("Ping message!");
+						} 
+						else if((responseObject["messageType"] as string) == "userInfo") {
+							Debug.Log("Connection authentication complete");
+							IsConnected = true;
+							if(Connected != null) 
+							{
+								Connected(this, new EventArgs());
+							}
+						} else {
+							MessageQueue.Enqueue(responseObject);
 						}
 					}
 				}
@@ -112,6 +126,12 @@ public class GameNetwork : MonoBehaviour {
 	public  void Send(String data) {
 		var byteData = Encoding.ASCII.GetBytes(data);
 		client.BeginSend(byteData, 0, byteData.Length, 0, SendCallback, client);
+	}
+
+	private void SendAuthenticationMessage()
+	{
+		Debug.Log("Sending authentication message");
+		Send ("{\"messageType\":\"authenticate\", \"token\":\""+(Authentication.Token)+"\"}");
 	}
 	
 	private  void SendCallback(IAsyncResult ar) {

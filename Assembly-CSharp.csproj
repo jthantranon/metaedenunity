@@ -48,6 +48,7 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\Authentication.cs" />
      <Compile Include="Assets\Scripts\CameraPositionController.cs" />
+     <Compile Include="Assets\Scripts\CharacterSelection.cs" />
      <Compile Include="Assets\Scripts\Entities\Compiler.cs" />
      <Compile Include="Assets\Scripts\Entities\Container.cs" />
      <Compile Include="Assets\Scripts\Entities\Interactable.cs" />

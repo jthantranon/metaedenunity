@@ -74,7 +74,7 @@ public class Authentication : MonoBehaviour {
 			var reader = new Pathfinding.Serialization.JsonFx.JsonReader(www.text, settings2);
 			var resultObject = reader.Deserialize() as IDictionary<string, object>;
 			Token = resultObject["access_token"] as string;
-			Application.LoadLevel("FirstScene");
+			Application.LoadLevel("CharacterSelection");
 			Debug.Log(Token);
 			authError.gameObject.SetActive(false);
 		} else {
