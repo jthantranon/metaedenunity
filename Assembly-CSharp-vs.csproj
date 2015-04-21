@@ -57,6 +57,7 @@
      <Compile Include="Assets\Scripts\InteractionArea.cs" />
      <Compile Include="Assets\Scripts\Items.cs" />
      <Compile Include="Assets\Scripts\KeyboardMouseInput.cs" />
+     <Compile Include="Assets\Scripts\NetworkGameplay.cs" />
      <Compile Include="Assets\Scripts\NetworkMessageHandler.cs" />
      <Compile Include="Assets\Scripts\PlayerController.cs" />
  <Reference Include="UnityEngine.UI">

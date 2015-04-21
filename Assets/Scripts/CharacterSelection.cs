@@ -21,6 +21,7 @@ public class CharacterSelection : MonoBehaviour {
 			networkMessageHandler.SendCharacterListRequest();
 		}
 		networkMessageHandler.CharacterList += OnCharacterListRetrieved;
+		networkMessageHandler.JoinedInstance += OnJoinedInstance;
 	}
 	
 	// Update is called once per frame
@@ -28,9 +29,26 @@ public class CharacterSelection : MonoBehaviour {
 	
 	}
 
+	void Destroy()
+	{
+		networkMessageHandler.CharacterList -= OnCharacterListRetrieved;
+		networkMessageHandler.JoinedInstance -= OnJoinedInstance;
+	}
+
 	private void OnCharacterListRetrieved(IDictionary<string, object>[] characters)
 	{
 		Debug.Log("Character list retrieved");
-		// TODO: do something with the character list
+		// TODO: do something with the character list [{ id: '', name: '' }, { id: '', name: '' }]
+	}
+
+	private void OnJoinedInstance(string instanceId)
+	{
+		Debug.Log("Joined instance");
+		Application.LoadLevel("FirstScene");
+	}
+
+	public void SelectCharacter(string characterId)
+	{
+		networkMessageHandler.SendSelectCharacterMessage(characterId);
 	}
 }

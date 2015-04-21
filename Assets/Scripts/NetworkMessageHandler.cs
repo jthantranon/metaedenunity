@@ -5,10 +5,11 @@ using System.Collections.Generic;
 [RequireComponent(typeof(GameNetwork))]
 public class NetworkMessageHandler : MonoBehaviour {
 	private GameNetwork gameNetwork;
+	private Queue<IDictionary<string, object>> unhandledQueue = new Queue<IDictionary<string, object>>();
 
 	public event System.Action<IDictionary<string, object>[]> CharacterList;
 	public event System.Action<string> JoinedInstance;
-	public event System.Action<IDictionary<string, object>> PlayerInfo;
+	public event System.Action<IDictionary<string, object>> CharacterInfo;
 	public event System.Action<IDictionary<string, object>> ZoneInfo;
 
 	// Use this for initialization
@@ -17,34 +18,46 @@ public class NetworkMessageHandler : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		while(GameNetwork.MessageQueue.Count > 0) {
-			HandleMessage(GameNetwork.MessageQueue.Dequeue());
+	void Update () 
+	{
+		while(GameNetwork.MessageQueue.Count > 0) 
+		{
+			var message = GameNetwork.MessageQueue.Dequeue();
+			if(!HandleMessage(message))
+			{
+				unhandledQueue.Enqueue(message);
+			}
+		}
+		while(unhandledQueue.Count > 0)
+		{
+			GameNetwork.MessageQueue.Enqueue(unhandledQueue.Dequeue());
 		}
 	}
 
-	void HandleMessage(IDictionary<string, object> message)
+	bool HandleMessage(IDictionary<string, object> message)
 	{
 		var messageType = message["messageType"] as string;
 		Debug.Log(messageType);
+		var handled = false;
 		switch(messageType) 
 		{
 		case "characterList":
-			HandleCharacterListMessage(message);
+			handled = HandleCharacterListMessage(message);
 			break;
 		case "playerInfo":
-			HandlePlayerInfoMessage(message);
+			handled = HandleCharacterInfoMessage(message);
 			break;
 		case "instanceInfo":
-			HandleZoneInfoMessage(message);
+			handled = HandleZoneInfoMessage(message);
 			break;
 		case "joinedInstance":
-			HandleJoinedInstanceMessage(message);
+			handled = HandleJoinedInstanceMessage(message);
 			break;
 		}
+		return handled;
 	}
 
-	void HandleCharacterListMessage(IDictionary<string, object> message)
+	bool HandleCharacterListMessage(IDictionary<string, object> message)
 	{
 		var characterObjectList = (message["characters"] as object[]);
 		var characters = new IDictionary<string, object>[characterObjectList.Length];
@@ -53,31 +66,39 @@ public class NetworkMessageHandler : MonoBehaviour {
 		}
 		if(CharacterList != null) {
 			CharacterList(characters);
+			return true;
 		}
+		return false;
 	}
 
-	void HandlePlayerInfoMessage(IDictionary<string, object> message)
+	bool HandleCharacterInfoMessage(IDictionary<string, object> message)
 	{
 		var info = message["info"] as IDictionary<string, object>;
-		if(PlayerInfo != null) {
-			PlayerInfo(info);
+		if(CharacterInfo != null) {
+			CharacterInfo(info);
+			return true;
 		}
+		return false;
 	}
 
-	void HandleJoinedInstanceMessage(IDictionary<string, object> message)
+	bool HandleJoinedInstanceMessage(IDictionary<string, object> message)
 	{
 		var instanceId = message["instanceId"] as string;
 		if(JoinedInstance != null) {
 			JoinedInstance(instanceId);
+			return true;
 		}
+		return false;
 	}
 
-	void HandleZoneInfoMessage(IDictionary<string, object> message)
+	bool HandleZoneInfoMessage(IDictionary<string, object> message)
 	{
 		var info = message["info"] as IDictionary<string, object>;
 		if(ZoneInfo != null) {
 			ZoneInfo(info);
+			return true;
 		}
+		return false;
 	}
 
 	public void SendCharacterListRequest()
