@@ -110,4 +110,9 @@ public class NetworkMessageHandler : MonoBehaviour {
 	{
 		gameNetwork.Send ("{\"messageType\":\"selectCharacter\",\"characterId\":\"" + characterId + "\"}");
 	}
+
+	public void SendCreateCharacterMessage(string name)
+	{
+		gameNetwork.Send ("{\"messageType\":\"createCharacter\",\"character\":{\"name\":\"" + name + "\"}}");
+	}
 }

@@ -42,16 +42,20 @@ public class GameNetwork : MonoBehaviour {
 		}
 	}
 
-	void OnDestroy()
+	public void CloseConnection()
 	{
 		Debug.Log("Destroying connection");
 		IsConnected = false;
 		IsPolling = false;
+		client.Shutdown(SocketShutdown.Both);
+		client.Close();
+	}
+
+	void OnDestroy()
+	{
 		if(receiveCoroutine != null) {
 			StopCoroutine(receiveCoroutine);
 		}
-		client.Shutdown(SocketShutdown.Both);
-		client.Close();
 	}
 
 	private IEnumerator ConnectAsync()

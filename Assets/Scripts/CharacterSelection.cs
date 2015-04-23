@@ -38,6 +38,11 @@ public class CharacterSelection : MonoBehaviour {
 	private void OnCharacterListRetrieved(IDictionary<string, object>[] characters)
 	{
 		Debug.Log("Character list retrieved");
+		if(characters.Length > 0) {
+			SelectCharacter(characters[0]["_id"] as string);
+		} else {
+			CreateCharacter("test");
+		}
 		// TODO: do something with the character list [{ id: '', name: '' }, { id: '', name: '' }]
 	}
 
@@ -50,5 +55,10 @@ public class CharacterSelection : MonoBehaviour {
 	public void SelectCharacter(string characterId)
 	{
 		networkMessageHandler.SendSelectCharacterMessage(characterId);
+	}
+
+	public void CreateCharacter(string name)
+	{
+		networkMessageHandler.SendCreateCharacterMessage(name);
 	}
 }
