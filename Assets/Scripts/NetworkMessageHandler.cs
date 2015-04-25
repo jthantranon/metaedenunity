@@ -11,6 +11,7 @@ public class NetworkMessageHandler : MonoBehaviour {
 	public event System.Action<string> JoinedInstance;
 	public event System.Action<IDictionary<string, object>> CharacterInfo;
 	public event System.Action<IDictionary<string, object>> ZoneInfo;
+	public event System.Action<IDictionary<string, object>> WorldStateDelta;
 	public event System.Action<string> EntityDestroyed;
 
 	public delegate void ResourceGainedDelegate(string type, int count);
@@ -68,6 +69,9 @@ public class NetworkMessageHandler : MonoBehaviour {
 			break;
 		case "entityDestroyed":
 			handled = HandleEntityDestroyedMessage(message);
+			break;
+		case "worldStateDelta":
+			handled = HandleWorldStateDeltaMessage(message);
 			break;
 		}
 		return handled;
@@ -151,6 +155,17 @@ public class NetworkMessageHandler : MonoBehaviour {
 		return false;
 	}
 
+	bool HandleWorldStateDeltaMessage(IDictionary<string, object> message)
+	{
+		var wsd = message["worldStateDelta"] as IDictionary<string, object>;
+		if(WorldStateDelta != null) {
+			WorldStateDelta(wsd);
+			return true;
+		}
+		return false;
+	}
+
+
 	public void SendCharacterListRequest()
 	{
 		gameNetwork.Send ("{\"messageType\":\"characterList\"}");
@@ -164,5 +179,10 @@ public class NetworkMessageHandler : MonoBehaviour {
 	public void SendCreateCharacterMessage(string name)
 	{
 		gameNetwork.Send ("{\"messageType\":\"createCharacter\",\"character\":{\"name\":\"" + name + "\"}}");
+	}
+
+	public void SendMoveToPointMessage(Vector3 position)
+	{
+		gameNetwork.Send ("{\"messageType\":\"moveToPoint\",\"targetPoint\":{\"x\":" + position.x + ", \"y\":" + position.y + "}}");
 	}
 }

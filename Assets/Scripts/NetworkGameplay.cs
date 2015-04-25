@@ -19,6 +19,7 @@ public class NetworkGameplay : MonoBehaviour {
 		networkMessageHandler.CharacterInfo += OnCharacterInfo;
 		networkMessageHandler.ZoneInfo += OnZoneInfo;
 		networkMessageHandler.JoinedInstance += OnJoinedInstance;
+		networkMessageHandler.WorldStateDelta += OnWorldStateDelta;
 	}
 
 	// Update is called once per frame
@@ -30,6 +31,7 @@ public class NetworkGameplay : MonoBehaviour {
 		networkMessageHandler.CharacterInfo -= OnCharacterInfo;
 		networkMessageHandler.ZoneInfo -= OnZoneInfo;
 		networkMessageHandler.JoinedInstance -= OnJoinedInstance;
+		networkMessageHandler.WorldStateDelta -= OnWorldStateDelta;
 	}
 
 	private void OnJoinedInstance(string instanceId)
@@ -89,8 +91,8 @@ public class NetworkGameplay : MonoBehaviour {
 	}
 
 	void AddWisp (IDictionary<string,object> entity){
-		Debug.Log ("rendering Wisp");
-		var wispObject = (GameObject)Instantiate (statuePrefab);
+		Debug.LogWarning ("rendering Wisp");
+		var wispObject = (GameObject)Instantiate (wispPrefab);
 		var position = ConvertToVector3 (entity ["position"]);
 		wispObject.transform.position = position;
 	}
@@ -127,6 +129,12 @@ public class NetworkGameplay : MonoBehaviour {
 		}
 		//TODO: read and use entity info
 	}
+
+	void OnWorldStateDelta (IDictionary<string,object> wsd)
+	{
+		Debug.LogWarning (wsd);
+	}
+
 
 	private Vector3 ConvertToVector3(object vecObject)
 	{

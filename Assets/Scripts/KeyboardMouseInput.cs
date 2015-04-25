@@ -5,9 +5,11 @@ using System.Collections;
 public class KeyboardMouseInput : MonoBehaviour {
 	private CameraPositionController cameraPositionController;
 	public PlayerController playerController;
+	private GameObject network;
 	// Use this for initialization
 	void Start () {
 		cameraPositionController = GetComponent<CameraPositionController>();
+		network = GameObject.Find ("Network");
 	}
 	
 	// Update is called once per frame
@@ -20,6 +22,7 @@ public class KeyboardMouseInput : MonoBehaviour {
 				if(hit.collider.tag == "Floor") {
 					playerController.targetPosition = new Vector3(hit.point.x, playerController.gameObject.transform.position.y, hit.point.z);
 					playerController.isMoving = true;
+					network.GetComponent<NetworkMessageHandler>().SendMoveToPointMessage(playerController.targetPosition);
 				} else {
 					var interactable = hit.collider.GetComponent<Interactable>();
 					if(interactable != null) {

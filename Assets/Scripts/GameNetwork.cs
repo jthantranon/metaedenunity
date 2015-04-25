@@ -128,6 +128,7 @@ public class GameNetwork : MonoBehaviour {
 	}
 	
 	public  void Send(String data) {
+		Debug.Log ("sending message: " + data);
 		var byteData = Encoding.ASCII.GetBytes(data);
 		client.BeginSend(byteData, 0, byteData.Length, 0, SendCallback, client);
 	}
