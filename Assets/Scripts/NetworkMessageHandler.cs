@@ -11,6 +11,13 @@ public class NetworkMessageHandler : MonoBehaviour {
 	public event System.Action<string> JoinedInstance;
 	public event System.Action<IDictionary<string, object>> CharacterInfo;
 	public event System.Action<IDictionary<string, object>> ZoneInfo;
+	public event System.Action<string> EntityDestroyed;
+
+	public delegate void ResourceGainedDelegate(string type, int count);
+	public event ResourceGainedDelegate ResourceGained;
+	
+	public delegate void PlayerJoinedDelegate(string playerId, IDictionary<string, object> character);
+	public event PlayerJoinedDelegate PlayerJoined;
 
 	// Use this for initialization
 	void Start () {
@@ -52,6 +59,15 @@ public class NetworkMessageHandler : MonoBehaviour {
 			break;
 		case "joinedInstance":
 			handled = HandleJoinedInstanceMessage(message);
+			break;
+		case "resourceGained":
+			handled = HandleResourceGainedMessage(message);
+			break;
+		case "playerJoined":
+			handled = HandlePlayerJoinedMessage(message);
+			break;
+		case "entityDestroyed":
+			handled = HandleEntityDestroyedMessage(message);
 			break;
 		}
 		return handled;
@@ -96,6 +112,40 @@ public class NetworkMessageHandler : MonoBehaviour {
 		var info = message["info"] as IDictionary<string, object>;
 		if(ZoneInfo != null) {
 			ZoneInfo(info);
+			return true;
+		}
+		return false;
+	}
+
+	bool HandleResourceGainedMessage(IDictionary<string, object> message)
+	{
+		var type = message["type"] as string;
+		var count = System.Convert.ToInt32(message["count"]);
+		if(ResourceGained != null) {
+			ResourceGained(type, count);
+			return true;
+		}
+		return false;
+	}
+
+	bool HandlePlayerJoinedMessage(IDictionary<string, object> message)
+	{
+		var playerId = message["playerId"] as string;
+		var character = message["character"] as IDictionary<string, object>;
+		if(PlayerJoined != null)
+		{
+			PlayerJoined(playerId, character);
+			return true;
+		}
+		return false;
+	}
+
+	bool HandleEntityDestroyedMessage(IDictionary<string, object> message)
+	{
+		var entityId = message["entityId"] as string;
+		if(EntityDestroyed != null)
+		{
+			EntityDestroyed(entityId);
 			return true;
 		}
 		return false;
