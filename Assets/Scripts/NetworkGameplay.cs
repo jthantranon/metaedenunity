@@ -14,6 +14,7 @@ public class NetworkGameplay : MonoBehaviour {
 		networkMessageHandler = GetComponent<NetworkMessageHandler>();
 		networkMessageHandler.CharacterInfo += OnCharacterInfo;
 		networkMessageHandler.ZoneInfo += OnZoneInfo;
+		networkMessageHandler.JoinedInstance += OnJoinedInstance;
 	}
 
 	// Update is called once per frame
@@ -24,9 +25,14 @@ public class NetworkGameplay : MonoBehaviour {
 	{
 		networkMessageHandler.CharacterInfo -= OnCharacterInfo;
 		networkMessageHandler.ZoneInfo -= OnZoneInfo;
+		networkMessageHandler.JoinedInstance -= OnJoinedInstance;
 	}
 
-
+	private void OnJoinedInstance(string instanceId)
+	{
+		Debug.Log("Joined instance");
+		Application.LoadLevel("FirstScene");
+	}
 
 	private void OnCharacterInfo(IDictionary<string, object> characterInfo)
 	{
@@ -59,6 +65,7 @@ public class NetworkGameplay : MonoBehaviour {
 			wallObject.transform.localScale = new Vector3(magnitude, 1, 1);
 			wallObject.transform.Rotate(new Vector3(0, Mathf.Atan(diff.z / diff.x) * 180 / Mathf.PI, 0));
 		}
+		//TODO: read and use entity info
 	}
 
 	private Vector3 ConvertToVector3(object vecObject)
