@@ -124,6 +124,33 @@ public class GameNetwork : MonoBehaviour {
 					}
 				}
 			} 
+			else {
+				if (stringBuilder.Length > 1) {
+					response = stringBuilder.ToString();
+					stringBuilder.Remove(0, stringBuilder.Length);
+					Debug.Log(response);
+					var jsonReader = new JsonReader(response, new JsonReaderSettings());
+					var resp = jsonReader.Deserialize();
+					var responseObjects = resp as object[];
+					foreach(IDictionary<string, object> responseObject in responseObjects)
+					{
+						if((responseObject["messageType"] as string) == "pong") {
+							Debug.Log("Ping message!");
+						} 
+						else if((responseObject["messageType"] as string) == "userInfo") {
+							Debug.Log("Connection authentication complete");
+							IsConnected = true;
+							if(Connected != null) 
+							{
+								Connected(this, new EventArgs());
+							}
+						} else {
+							MessageQueue.Enqueue(responseObject);
+						}
+					}
+				}
+
+			}
 		}
 	}
 	
