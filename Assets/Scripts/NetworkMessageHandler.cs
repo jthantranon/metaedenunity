@@ -117,7 +117,7 @@ public class NetworkMessageHandler : MonoBehaviour {
 		if(ZoneInfo != null) {
 			ZoneInfo(info);
 			return true;
-		}
+		} 
 		return false;
 	}
 

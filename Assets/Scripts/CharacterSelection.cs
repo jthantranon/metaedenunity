@@ -9,6 +9,8 @@ public class CharacterSelection : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		networkMessageHandler = GetComponent<NetworkMessageHandler>();
+		networkMessageHandler.CharacterList += OnCharacterListRetrieved;
+		networkMessageHandler.JoinedInstance += OnJoinedInstance;
 		if(!GameNetwork.IsConnected) {
 			Debug.Log("Waiting for connection");
 			GameNetwork.Connected += (sender, e) => 
@@ -20,8 +22,6 @@ public class CharacterSelection : MonoBehaviour {
 			Debug.Log("Sending character list request");
 			networkMessageHandler.SendCharacterListRequest();
 		}
-		networkMessageHandler.CharacterList += OnCharacterListRetrieved;
-		networkMessageHandler.JoinedInstance += OnJoinedInstance;
 	}
 	
 	// Update is called once per frame

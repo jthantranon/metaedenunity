@@ -10,7 +10,7 @@ using Pathfinding.Serialization.JsonFx;
 public class GameNetwork : MonoBehaviour {
 	private static readonly string PingMessage = "{\"messageType\":\"ping\"}";
 	private static readonly float PingInterval = 2f;
-	private static readonly int BufferSize = 64;
+	private static readonly int BufferSize = 1024;
 
 	private static Socket client;
 
@@ -31,6 +31,8 @@ public class GameNetwork : MonoBehaviour {
 	void Start () {
 		if(!IsConnected) {
 			StartCoroutine(ConnectAsync());
+		} else {
+			receiveCoroutine = StartCoroutine(ReceiveAsync());
 		}
 	}
 
@@ -97,13 +99,11 @@ public class GameNetwork : MonoBehaviour {
 			var bytesRead = client.EndReceive(result);
 			if (bytesRead > 0) {
 				stringBuilder.Append(Encoding.ASCII.GetString(buffer, 0, bytesRead));
-				Debug.Log(stringBuilder.ToString());
 				if(bytesRead < BufferSize) {
 					if (stringBuilder.Length > 1) {
 						response = stringBuilder.ToString();
 					}
 					stringBuilder.Remove(0, stringBuilder.Length);
-					Debug.Log(response);
 					var jsonReader = new JsonReader(response, new JsonReaderSettings());
 					var resp = jsonReader.Deserialize();
 					var responseObjects = resp as object[];
@@ -129,7 +129,6 @@ public class GameNetwork : MonoBehaviour {
 				if (stringBuilder.Length > 1) {
 					response = stringBuilder.ToString();
 					stringBuilder.Remove(0, stringBuilder.Length);
-					Debug.Log(response);
 					var jsonReader = new JsonReader(response, new JsonReaderSettings());
 					var resp = jsonReader.Deserialize();
 					var responseObjects = resp as object[];
@@ -150,7 +149,6 @@ public class GameNetwork : MonoBehaviour {
 						}
 					}
 				}
-
 			}
 		}
 	}
