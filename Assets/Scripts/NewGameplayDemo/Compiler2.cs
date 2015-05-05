@@ -16,6 +16,8 @@ public class Compiler2 : MonoBehaviour {
 	public float compileSpeed = 3f;
 	public GameObject fileSystemPrefab;
 	public GameObject shellPrefab;
+	public GameObject currencyMinerPrefab;
+	public GameObject stealthFieldPrefab;
 
 	// Use this for initialization
 	void Start () {
@@ -73,6 +75,24 @@ public class Compiler2 : MonoBehaviour {
 		if(!compiling) {
 			compilingObjectPrefab = shellPrefab;
 			compilingObjectName = "Shell";
+			BeginCompile();
+		}
+	}
+
+	public void CompileCurrencyMiner()
+	{
+		if(!compiling) {
+			compilingObjectPrefab = currencyMinerPrefab;
+			compilingObjectName = "Currency Miner";
+			BeginCompile();
+		}
+	}
+
+	public void CompileStealthField()
+	{
+		if(!compiling) {
+			compilingObjectPrefab = stealthFieldPrefab;
+			compilingObjectName = "Stealth Field";
 			BeginCompile();
 		}
 	}
