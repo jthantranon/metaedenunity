@@ -31,7 +31,7 @@ public class InventoryItem : MonoBehaviour {
 				if (Physics.Raycast(ray, out hit, 1000.000f))
 				{
 					if(hit.collider.tag == "Floor") {
-						placementObject.transform.position = new Vector3(hit.point.x, 0, hit.point.z);
+						placementObject.transform.position = new Vector3(Mathf.RoundToInt(hit.point.x / 5) * 5, 0, Mathf.RoundToInt(hit.point.z / 5) * 5);
 					}
 				}
 			}

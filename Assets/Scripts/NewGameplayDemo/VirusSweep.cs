@@ -28,10 +28,19 @@ public class VirusSweep : MonoBehaviour {
 
 	void PerformSweep() {
 		var installedPrograms = FindObjectsOfType(typeof(InstalledProgram));
+		var stealthFields = FindObjectsOfType(typeof(StealthField));
 		for(var i = 0; i < installedPrograms.Length; ++i)
 		{
 			var installedProgram = (InstalledProgram)installedPrograms[i];
-			if(random.Next(100) > installedProgram.concealmentRating)
+			var totalConcealmentRating = installedProgram.concealmentRating;
+			foreach(StealthField stealthField in stealthFields) {
+				if(Vector3.SqrMagnitude(installedProgram.transform.position - stealthField.transform.position) 
+				   < (stealthField.radius * stealthField.radius))
+				{
+					totalConcealmentRating += stealthField.concealmentAmount;
+				}
+			}
+			if(random.Next(100) > totalConcealmentRating)
 			{
 				Debug.Log("Program caught by scan");
 				Destroy(installedProgram.gameObject);

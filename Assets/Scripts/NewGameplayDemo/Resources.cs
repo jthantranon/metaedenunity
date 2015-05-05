@@ -7,9 +7,11 @@ public class Resources : MonoBehaviour {
 	private int totalMemory;
 	private int currentProcessingPower;
 	private int currentMemory;
+	private float currency;
 
 	public Text memoryText;
 	public Text processingPowerText;
+	public Text currencyText;
 
 	// Use this for initialization
 	void Start () {
@@ -19,6 +21,7 @@ public class Resources : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		UpdateValues();
+		currencyText.text = "Currency: " + currency;
 	}
 
 	void UpdateValues()
@@ -53,5 +56,10 @@ public class Resources : MonoBehaviour {
 		}
 		memoryText.text = "Memory Used: " +  currentMemory + "/" + totalMemory;
 		processingPowerText.text = "Processing Power Used: " + currentProcessingPower + "/" + totalProcessingPower;
+	}
+
+	public void AddCurrency(float currency) 
+	{
+		this.currency += currency;
 	}
 }
