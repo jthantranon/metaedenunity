@@ -132,7 +132,20 @@ public class NetworkGameplay : MonoBehaviour {
 
 	void OnWorldStateDelta (IDictionary<string,object> wsd)
 	{
-		Debug.LogWarning (wsd);
+		foreach (var key in wsd.Keys) {
+			var firstObj = wsd[key];
+//			Debug.LogWarning(key + " = " + firstObj);
+			if(firstObj is IDictionary<string,object>){
+				var firstDict = firstObj as IDictionary<string,object>;
+				foreach (var nextKey in firstDict){
+//					Debug.LogWarning(nextKey.Key);
+//					Debug.LogWarning(nextKey.Value);
+				}
+			}
+		}
+		foreach (var kvp in wsd) {
+//			Debug.Log(kvp.Key + " = " + kvp.Value);
+		}
 	}
 
 
