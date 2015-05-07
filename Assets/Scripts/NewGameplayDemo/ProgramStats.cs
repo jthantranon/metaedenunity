@@ -25,7 +25,6 @@ public class ProgramStats : MonoBehaviour {
 	{
 		if(Input.GetMouseButtonDown(0)) {
 			RaycastHit hit;
-			Debug.Log("Clicked");
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			if (Physics.Raycast(ray, out hit, 1000.000f))
 			{
@@ -33,11 +32,12 @@ public class ProgramStats : MonoBehaviour {
 				if(clickedProgram != null) {
 					currentlySelectedProgram = clickedProgram;
 				} else 
-				{currentlySelectedProgram = null;
+				{
+					currentlySelectedProgram = null;
 					Debug.Log("Clicked on: " + hit.collider.name);
 				}
 			} else {
-				Debug.Log("Not Hit");
+				currentlySelectedProgram = null;
 			}
 		}
 	}

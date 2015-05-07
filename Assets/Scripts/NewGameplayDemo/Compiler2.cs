@@ -18,6 +18,7 @@ public class Compiler2 : MonoBehaviour {
 	public GameObject shellPrefab;
 	public GameObject currencyMinerPrefab;
 	public GameObject stealthFieldPrefab;
+	public GameObject dataMinerPrefab;
 
 	// Use this for initialization
 	void Start () {
@@ -93,6 +94,15 @@ public class Compiler2 : MonoBehaviour {
 		if(!compiling) {
 			compilingObjectPrefab = stealthFieldPrefab;
 			compilingObjectName = "Stealth Field";
+			BeginCompile();
+		}
+	}
+
+	public void CompileDataMiner()
+	{
+		if(!compiling) {
+			compilingObjectPrefab = dataMinerPrefab;
+			compilingObjectName = "Data Miner";
 			BeginCompile();
 		}
 	}
