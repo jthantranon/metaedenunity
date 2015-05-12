@@ -13,6 +13,12 @@ public class Resources : MonoBehaviour {
 	public Text processingPowerText;
 	public Text currencyText;
 
+	public int TotalMemory { get { return totalMemory; } }
+	public int TotalProcessingPower { get { return totalProcessingPower; } }
+
+	public int CurrentMemory { get { return currentMemory; } }
+	public int CurrentProcessingPower { get { return currentProcessingPower; } }
+
 	// Use this for initialization
 	void Start () {
 	
@@ -29,8 +35,8 @@ public class Resources : MonoBehaviour {
 		var installedPrograms = FindObjectsOfType<InstalledProgram>();
 		var fileSystems = FindObjectsOfType<FileSystem>();
 		var shells = FindObjectsOfType<Shell>(); 
-		totalProcessingPower = 0;
-		totalMemory = 0;
+		totalProcessingPower = 2;
+		totalMemory = 2;
 		currentMemory = 0;
 		currentProcessingPower = 0;
 		foreach(var fs in fileSystems)

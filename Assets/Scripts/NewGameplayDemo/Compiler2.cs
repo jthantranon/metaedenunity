@@ -26,7 +26,7 @@ public class Compiler2 : MonoBehaviour {
 		progressBar = transform.FindChild("ProgressBar").GetComponent<ProgressBar>();
 		progressBar.gameObject.SetActive(false);
 		installedProgram = GetComponent<InstalledProgram>();
-		if(!installedProgram.IsOwned) {
+		if(!installedProgram.IsOwned && !installedProgram.isPublic) {
 			compilerOptions.SetActive(false);
 		}
 	}

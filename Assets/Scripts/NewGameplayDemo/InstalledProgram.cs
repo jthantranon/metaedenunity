@@ -8,6 +8,8 @@ public class InstalledProgram : MonoBehaviour {
 	public float decryptSpeed;
 
 	public bool placing;
+	public bool isPublic;
+
 	private bool isOwned;
 	private float decryptTimer;
 	private bool decrypting;
@@ -15,9 +17,13 @@ public class InstalledProgram : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		progressBar = transform.FindChild("ProgressBar").GetComponent<ProgressBar>();
-		transform.FindChild("Encrypted").gameObject.SetActive(!isOwned);
-		progressBar.gameObject.SetActive(false);
+		try
+		{
+			progressBar = transform.FindChild("ProgressBar").GetComponent<ProgressBar>();
+			transform.FindChild("Encrypted").gameObject.SetActive(!isOwned && !isPublic);
+			progressBar.gameObject.SetActive(false);
+		} catch
+		{}
 	}
 	
 	// Update is called once per frame
@@ -39,7 +45,7 @@ public class InstalledProgram : MonoBehaviour {
 		get { return isOwned; }
 		set {
 			isOwned = value;
-			transform.FindChild("Encrypted").gameObject.SetActive(!isOwned);
+			transform.FindChild("Encrypted").gameObject.SetActive(!isOwned && !isPublic);
 		}
 	}
 

@@ -3,6 +3,8 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class InventoryItem : MonoBehaviour {
+	private Resources resources;
+	private Button button;
 	private bool placing;
 	private GameObject placementObject;
 	private string itemName;
@@ -13,9 +15,10 @@ public class InventoryItem : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		var button = GetComponent<Button>();
+		button = GetComponent<Button>();
 		button.onClick = new Button.ButtonClickedEvent();
 		button.onClick.AddListener(StartPlacement);
+		resources = FindObjectOfType<Resources>();
 	}
 	
 	// Update is called once per frame
@@ -34,6 +37,18 @@ public class InventoryItem : MonoBehaviour {
 						placementObject.transform.position = new Vector3(Mathf.RoundToInt(hit.point.x / 5) * 5, 0, Mathf.RoundToInt(hit.point.z / 5) * 5);
 					}
 				}
+			}
+		} else {
+			var remainingMemory = resources.TotalMemory - resources.CurrentMemory;
+			var remainingProcessingPower = resources.TotalProcessingPower - resources.CurrentProcessingPower;
+			var installedProgram = placementPrefab.GetComponent<InstalledProgram>();
+			var generatesMemory = placementPrefab.GetComponent<FileSystem>() != null;
+			var generatesProcessingPower = placementPrefab.GetComponent<Shell>() != null;
+			if((installedProgram.memory > remainingMemory && !generatesMemory) 
+			   || (installedProgram.processingPower > remainingProcessingPower && !generatesProcessingPower)) {
+				button.interactable = false;
+			} else {
+				button.interactable = true;
 			}
 		}
 	}

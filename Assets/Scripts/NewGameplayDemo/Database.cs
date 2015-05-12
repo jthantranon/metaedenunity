@@ -14,7 +14,7 @@ public class Database : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		progressBar = transform.FindChild("ProgressBar").GetComponent<ProgressBar>();
-		GetComponent<InstalledProgram>().IsOwned = true;
+		GetComponent<InstalledProgram>().isPublic = true;
 	
 	}
 	

@@ -23,7 +23,7 @@ public class ProgramStats : MonoBehaviour {
 
 	void UpdateSelection()
 	{
-		if(Input.GetMouseButtonDown(0)) {
+		if(Input.GetMouseButtonDown(0) && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) {
 			RaycastHit hit;
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			if (Physics.Raycast(ray, out hit, 1000.000f))
