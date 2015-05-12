@@ -45,7 +45,10 @@ public class InstalledProgram : MonoBehaviour {
 		get { return isOwned; }
 		set {
 			isOwned = value;
-			transform.FindChild("Encrypted").gameObject.SetActive(!isOwned && !isPublic);
+			var encryptedTransform = transform.FindChild("Encrypted");
+			if(encryptedTransform != null) {
+				encryptedTransform.gameObject.SetActive(!isOwned && !isPublic);
+			}
 		}
 	}
 
@@ -54,5 +57,13 @@ public class InstalledProgram : MonoBehaviour {
 		progressBar.gameObject.SetActive(true);
 		decrypting = true;
 		decryptTimer = decryptSpeed;
+	}
+
+	void OnMoving()
+	{}
+
+	void OnPlaced()
+	{
+
 	}
 }

@@ -27,6 +27,7 @@ public class InventoryItem : MonoBehaviour {
 			if(Input.GetMouseButtonDown(0)) {
 				placing = false;
 				placementObject.GetComponent<InstalledProgram>().placing = false;
+				placementObject.BroadcastMessage("OnPlaced");
 				Destroy(gameObject);
 			} else {
 				RaycastHit hit;

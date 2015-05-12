@@ -19,6 +19,8 @@ public class Compiler2 : MonoBehaviour {
 	public GameObject currencyMinerPrefab;
 	public GameObject stealthFieldPrefab;
 	public GameObject dataMinerPrefab;
+	public GameObject inputSocketPrefab;
+	public GameObject outputSocketPrefab;
 
 	// Use this for initialization
 	void Start () {
@@ -103,6 +105,23 @@ public class Compiler2 : MonoBehaviour {
 		if(!compiling) {
 			compilingObjectPrefab = dataMinerPrefab;
 			compilingObjectName = "Data Miner";
+			BeginCompile();
+		}
+	}
+
+	public void CompileInputSocket()
+	{
+		if(!compiling) {
+			compilingObjectPrefab = inputSocketPrefab;
+			compilingObjectName = "Input Socket";
+			BeginCompile();
+		}
+	}
+	public void CompileOutputSocket()
+	{
+		if(!compiling) {
+			compilingObjectPrefab = outputSocketPrefab;
+			compilingObjectName = "Output Socket";
 			BeginCompile();
 		}
 	}

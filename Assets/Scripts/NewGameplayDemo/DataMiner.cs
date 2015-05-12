@@ -4,6 +4,7 @@ using System.Collections;
 [RequireComponent(typeof(InstalledProgram))]
 public class DataMiner : MonoBehaviour {
 	public Database targetDatabase;
+	public InputSocket targetInputSocket;
 	public float readSpeed = 2;
 	public float range = 10;
 	private Transform rangeIndicator;
@@ -17,25 +18,34 @@ public class DataMiner : MonoBehaviour {
 		rangeIndicator = transform.FindChild("RangeIndicator");
 		installedProgram = GetComponent<InstalledProgram>();
 		particles.gameObject.SetActive(false);
+		rangeIndicator.localScale = new Vector3(range/1.5f, 0.1f, range/1.5f);
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		if(targetDatabase == null && !installedProgram.placing) {
+		if(targetDatabase == null && targetInputSocket == null && !installedProgram.placing) {
 			UpdateTargetDatabase();
+			if(targetDatabase == null) {
+				UpdateTargetInputSocket();
+			}
 		}
 	}
 
 	[ExecuteInEditMode]
 	void Update()
 	{
-		rangeIndicator.localScale = new Vector3(range/1.5f, 0.1f, range/1.5f);
+		if(installedProgram.placing || (HoverCheck.HoveringProgram != null && HoverCheck.HoveringProgram.gameObject == gameObject)) {
+			rangeIndicator.gameObject.SetActive(true);
+		} else {
+			rangeIndicator.gameObject.SetActive(false);
+		}
 	}
 
 	void UpdateParticles()
 	{
-		var distance = Vector3.Distance(transform.position, targetDatabase.transform.position);
-		particles.transform.position = targetDatabase.transform.position;
+		Vector3 targetPosition = targetDatabase != null ? targetDatabase.transform.position : targetInputSocket.transform.position;
+		var distance = Utility.FlatDistance(transform.position, targetPosition);
+		particles.transform.position = targetPosition;
 		particles.startLifetime = distance / particles.startSpeed;
 		particles.gameObject.transform.LookAt(gameObject.transform.position);
 	}
@@ -63,10 +73,37 @@ public class DataMiner : MonoBehaviour {
 		}
 	}
 
+	void UpdateTargetInputSocket()
+	{
+		var inputSockets = FindObjectsOfType(typeof(InputSocket));
+		var bestSocket = (InputSocket)null;
+		var lowestQueueSize = int.MaxValue;
+		foreach(InputSocket socket in inputSockets)
+		{
+			if(socket.ConnectedPort != null) {
+				var distance = Utility.FlatDistance(transform.position, socket.transform.position);
+				if(distance <= range && socket.QueueSize < lowestQueueSize) {
+					lowestQueueSize = socket.QueueSize;
+					bestSocket = socket;
+				}
+			}
+		}
+		if(bestSocket != null) {
+			targetInputSocket = bestSocket;
+			targetInputSocket.QueueRead(this);
+			UpdateParticles();
+			particles.gameObject.SetActive(true);
+			Debug.Log("Found socket");
+		} else {
+			particles.gameObject.SetActive(false);
+		}
+	}
+
 	public void Grant(string fileType)
 	{
 		Debug.Log("Received a file: " + fileType);
 		targetDatabase = null;
+		targetInputSocket = null;
 	}
 
 

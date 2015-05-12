@@ -51,7 +51,6 @@ public class ProgramStats : MonoBehaviour {
 			powerText.text = currentlySelectedProgram.processingPower.ToString();
 			memoryText.text = currentlySelectedProgram.memory.ToString();
 			var stealthFields = FindObjectsOfType(typeof(StealthField));
-			Debug.Log("Found " + stealthFields.Length + " stealth fields");
 			var additionalConcealment = 0f;
 			foreach(StealthField stealthField in stealthFields) {
 				var distSquared = Vector3.SqrMagnitude(currentlySelectedProgram.transform.position - stealthField.transform.position);
