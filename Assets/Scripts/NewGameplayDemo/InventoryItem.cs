@@ -9,6 +9,7 @@ public class InventoryItem : MonoBehaviour {
 	private GameObject placementObject;
 	private string itemName;
 	private Text text;
+	private CommandShell[] commandShells;
 
 	public GameObject placementPrefab;
 
@@ -24,15 +25,27 @@ public class InventoryItem : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(placing) {
+			RaycastHit hit;
+			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+			var isRaycastHit = Physics.Raycast(ray, out hit, 1000.000f);
 			if(Input.GetMouseButtonDown(0)) {
-				placing = false;
-				placementObject.GetComponent<InstalledProgram>().placing = false;
-				placementObject.BroadcastMessage("OnPlaced");
-				Destroy(gameObject);
+				var isInsideRange = false;
+				foreach(var commandShell in commandShells)
+				{
+					if(Utility.FlatDistance(commandShell.transform.position, hit.point) < commandShell.commandRange) {
+						isInsideRange = true;
+						break;
+					}
+				}
+				if(isInsideRange) {
+					placing = false;
+					placementObject.GetComponent<InstalledProgram>().placing = false;
+					placementObject.GetComponent<Collider>().enabled = true;
+					placementObject.BroadcastMessage("OnPlaced");
+					Destroy(gameObject);
+				}
 			} else {
-				RaycastHit hit;
-				Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-				if (Physics.Raycast(ray, out hit, 1000.000f))
+				if (isRaycastHit)
 				{
 					if(hit.collider.tag == "Floor") {
 						placementObject.transform.position = new Vector3(Mathf.RoundToInt(hit.point.x / 5) * 5, 0, Mathf.RoundToInt(hit.point.z / 5) * 5);
@@ -67,5 +80,8 @@ public class InventoryItem : MonoBehaviour {
 		placementObject = (GameObject)Instantiate(placementPrefab);
 		placementObject.GetComponent<InstalledProgram>().placing = true;
 		placementObject.GetComponent<InstalledProgram>().IsOwned = true;
+		placementObject.GetComponent<Collider>().enabled = false;
+
+		commandShells = FindObjectsOfType<CommandShell>();
 	}
 }
