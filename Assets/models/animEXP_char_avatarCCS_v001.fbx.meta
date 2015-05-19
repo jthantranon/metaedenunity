@@ -1,0 +1,225 @@
+fileFormatVersion: 2
+guid: 710d330d42bb9b94199634bf4db2a45e
+timeCreated: 1431501662
+licenseType: Free
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: avatar_body_B_GRP
+    100004: avatar_body_B_JNT
+    100006: avatar_body_L_GRP
+    100008: avatar_body_L_JNT
+    100010: avatar_body_R_GRP
+    100012: avatar_body_R_JNT
+    100014: avatar_body_Under_GRP
+    100016: avatar_body_Under_JNT
+    100018: avatar_bodyA_L
+    100020: avatar_bodyA_R
+    100022: avatar_bodyB_L
+    100024: avatar_bodyB_R
+    100026: avatar_bodyC_L
+    100028: avatar_bodyC_R
+    100030: avatar_bodyD
+    100032: avatar_bodyE
+    100034: avatar_shield
+    100036: hexagonSphere4:hexagonSphere3
+    100038: hexagonSphere4:mod_char_avatar_GRP
+    100040: hexagonSphere4:Sphere
+    100042: mod_char_avatar_GRP
+    100044: model
+    100046: skeleton
+    100048: Sphere_GRP
+    100050: Sphere_JNT
+    100052: wisp_GEO
+    400000: //RootNode
+    400002: avatar_body_B_GRP
+    400004: avatar_body_B_JNT
+    400006: avatar_body_L_GRP
+    400008: avatar_body_L_JNT
+    400010: avatar_body_R_GRP
+    400012: avatar_body_R_JNT
+    400014: avatar_body_Under_GRP
+    400016: avatar_body_Under_JNT
+    400018: avatar_bodyA_L
+    400020: avatar_bodyA_R
+    400022: avatar_bodyB_L
+    400024: avatar_bodyB_R
+    400026: avatar_bodyC_L
+    400028: avatar_bodyC_R
+    400030: avatar_bodyD
+    400032: avatar_bodyE
+    400034: avatar_shield
+    400036: hexagonSphere4:hexagonSphere3
+    400038: hexagonSphere4:mod_char_avatar_GRP
+    400040: hexagonSphere4:Sphere
+    400042: mod_char_avatar_GRP
+    400044: model
+    400046: skeleton
+    400048: Sphere_GRP
+    400050: Sphere_JNT
+    400052: wisp_GEO
+    2300000: hexagonSphere4:hexagonSphere3
+    3300000: hexagonSphere4:hexagonSphere3
+    4300000: wisp_GEO
+    4300002: avatar_shield
+    4300004: hexagonSphere4:hexagonSphere3
+    4300006: avatar_bodyD
+    4300008: avatar_bodyC_L
+    4300010: avatar_bodyC_R
+    4300012: avatar_bodyE
+    4300014: avatar_bodyB_R
+    4300016: avatar_bodyA_R
+    4300018: avatar_bodyA_L
+    4300020: avatar_bodyB_L
+    7400000: Take 001
+    9500000: //RootNode
+    11100000: //RootNode
+    13700000: avatar_bodyA_L
+    13700002: avatar_bodyA_R
+    13700004: avatar_bodyB_L
+    13700006: avatar_bodyB_R
+    13700008: avatar_bodyC_L
+    13700010: avatar_bodyC_R
+    13700012: avatar_bodyD
+    13700014: avatar_bodyE
+    13700016: avatar_shield
+    13700018: wisp_GEO
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 2
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Take 001
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 90
+      wrapMode: 2
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 1
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: model
+        weight: 1
+      - path: model/mod_char_avatar_GRP
+        weight: 1
+      - path: model/mod_char_avatar_GRP/avatar_body_B_GRP
+        weight: 1
+      - path: model/mod_char_avatar_GRP/avatar_body_B_GRP/avatar_bodyC_L
+        weight: 1
+      - path: model/mod_char_avatar_GRP/avatar_body_B_GRP/avatar_bodyC_R
+        weight: 1
+      - path: model/mod_char_avatar_GRP/avatar_body_B_GRP/avatar_bodyD
+        weight: 1
+      - path: model/mod_char_avatar_GRP/avatar_body_L_GRP
+        weight: 1
+      - path: model/mod_char_avatar_GRP/avatar_body_L_GRP/avatar_bodyA_L
+        weight: 1
+      - path: model/mod_char_avatar_GRP/avatar_body_L_GRP/avatar_bodyB_L
+        weight: 1
+      - path: model/mod_char_avatar_GRP/avatar_body_R_GRP
+        weight: 1
+      - path: model/mod_char_avatar_GRP/avatar_body_R_GRP/avatar_bodyA_R
+        weight: 1
+      - path: model/mod_char_avatar_GRP/avatar_body_R_GRP/avatar_bodyB_R
+        weight: 1
+      - path: model/mod_char_avatar_GRP/avatar_body_Under_GRP
+        weight: 1
+      - path: model/mod_char_avatar_GRP/avatar_body_Under_GRP/avatar_bodyE
+        weight: 1
+      - path: model/mod_char_avatar_GRP/Sphere_GRP
+        weight: 1
+      - path: model/mod_char_avatar_GRP/Sphere_GRP/avatar_shield
+        weight: 1
+      - path: model/mod_char_avatar_GRP/Sphere_GRP/hexagonSphere4:mod_char_avatar_GRP
+        weight: 1
+      - path: model/mod_char_avatar_GRP/Sphere_GRP/hexagonSphere4:mod_char_avatar_GRP/hexagonSphere4:Sphere
+        weight: 1
+      - path: model/mod_char_avatar_GRP/Sphere_GRP/hexagonSphere4:mod_char_avatar_GRP/hexagonSphere4:Sphere/hexagonSphere4:hexagonSphere3
+        weight: 1
+      - path: model/mod_char_avatar_GRP/Sphere_GRP/wisp_GEO
+        weight: 1
+      - path: skeleton
+        weight: 1
+      - path: skeleton/avatar_body_B_JNT
+        weight: 1
+      - path: skeleton/avatar_body_L_JNT
+        weight: 1
+      - path: skeleton/avatar_body_R_JNT
+        weight: 1
+      - path: skeleton/avatar_body_Under_JNT
+        weight: 1
+      - path: skeleton/Sphere_JNT
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

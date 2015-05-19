@@ -11,7 +11,7 @@ public class ShellCameraSwitcher : MonoBehaviour {
 	private int currentShellIndex;
 	private bool inMobileShell;
 	private float mobileRotateX;
-	private float mobileRotateY;
+	private float mobileRotateY = 10;
 
 	// Use this for initialization
 	void Start () {
@@ -61,17 +61,34 @@ public class ShellCameraSwitcher : MonoBehaviour {
 
 	private void UpdateMobileShellCameraPosition()
 	{
-		transform.position = mobileShell.position + Vector3.back * 10;
-		transform.LookAt(transform.position + Vector3.forward);
-		mobileRotateX += 5f * Input.GetAxis("Mouse X");
-		mobileRotateY -= 5f * Input.GetAxis("Mouse Y");
-		if(mobileRotateY < -90) {
-			mobileRotateY = -90;
+		if(Input.GetMouseButton(0)) {
+			mobileRotateX += 5f * Input.GetAxis("Mouse X");
+			mobileRotateY += Input.GetAxis("Mouse Y");
+			if(mobileRotateY < 0) {
+				mobileRotateY = 0;
+			}
+			if(mobileRotateY > 10) {
+				mobileRotateY = 10;
+			}
 		}
-		if(mobileRotateY > 90) {
-			mobileRotateY = 90;
+		if(Input.GetKey("a")) {
+			mobileRotateX -= 90 * Time.deltaTime;
 		}
-		transform.Rotate(mobileRotateY, mobileRotateX, 0);
+		if(Input.GetKey("d")) {
+			mobileRotateX += 90 * Time.deltaTime;
+		}
+		mobileShell.LookAt(mobileShell.position + Vector3.forward);
+		mobileShell.Rotate(0, mobileRotateX, 0);
+		if(Input.GetKey("w")) {
+			var x = Mathf.Cos(mobileRotateX / 180 * Mathf.PI);
+			var z = -Mathf.Sin(mobileRotateX / 180 * Mathf.PI);
+			mobileShell.position = mobileShell.position + new Vector3(x, 0, z) * Time.deltaTime * 5;
+		}
+
+		transform.position = mobileShell.position + Vector3.left * 10;
+		transform.RotateAround(mobileShell.position, new Vector3(0, 1, 0), mobileRotateX);
+		transform.position = transform.position + Vector3.up * mobileRotateY;
+		transform.LookAt(mobileShell.position);
 	}
 
 	public void SwitchToNextCommandShell()
