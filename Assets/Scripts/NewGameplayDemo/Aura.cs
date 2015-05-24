@@ -14,7 +14,7 @@ public class Aura : MonoBehaviour {
 
 	[ExecuteInEditMode]
 	void Update () {
-		auraIndicator.localScale = new Vector3(range, 0.1f, range);
+		auraIndicator.localScale = new Vector3(range * 2f, 0.1f, range * 2f);
 	}
 
 	public void ShowAura(bool show)
