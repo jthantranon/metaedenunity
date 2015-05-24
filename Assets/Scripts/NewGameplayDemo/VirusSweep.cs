@@ -34,8 +34,9 @@ public class VirusSweep : MonoBehaviour {
 			var installedProgram = (InstalledProgram)installedPrograms[i];
 			var totalConcealmentRating = installedProgram.concealmentRating;
 			foreach(StealthField stealthField in stealthFields) {
+				var range = stealthField.Aura.range;
 				if(Vector3.SqrMagnitude(installedProgram.transform.position - stealthField.transform.position) 
-				   < (stealthField.radius * stealthField.radius))
+				   < (range * range))
 				{
 					totalConcealmentRating += stealthField.concealmentAmount;
 				}

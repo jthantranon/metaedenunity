@@ -54,7 +54,8 @@ public class ProgramStats : MonoBehaviour {
 			var additionalConcealment = 0f;
 			foreach(StealthField stealthField in stealthFields) {
 				var distSquared = Vector3.SqrMagnitude(currentlySelectedProgram.transform.position - stealthField.transform.position);
-				var fieldRadiusSquared = stealthField.radius * stealthField.radius;
+				var range = stealthField.Aura.range;
+				var fieldRadiusSquared = range * range;
 				if(distSquared < fieldRadiusSquared)
 				{
 					additionalConcealment += stealthField.concealmentAmount;

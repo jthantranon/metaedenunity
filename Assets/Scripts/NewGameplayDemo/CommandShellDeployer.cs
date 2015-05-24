@@ -24,7 +24,7 @@ public class CommandShellDeployer : MonoBehaviour {
 				var isInsideRange = false;
 				foreach(var commandShell in commandShells)
 				{
-					if(Utility.FlatDistance(commandShell.transform.position, hit.point) < commandShell.commandRange) {
+					if(Utility.FlatDistance(commandShell.transform.position, hit.point) < commandShell.Aura.range) {
 						isInsideRange = true;
 						break;
 					}

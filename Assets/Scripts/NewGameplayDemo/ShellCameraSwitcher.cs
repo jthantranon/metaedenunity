@@ -52,9 +52,9 @@ public class ShellCameraSwitcher : MonoBehaviour {
 		var newPosition = new Vector2(newCameraX, newCameraZ);
 		var shellPositionVector2 = new Vector2(currentShell.transform.position.x, currentShell.transform.position.z) - cameraOffset;
 		var distanceFromShell = Vector2.Distance(newPosition, shellPositionVector2);
-		if(distanceFromShell > currentShell.commandRange) {
+		if(distanceFromShell > currentShell.Aura.range) {
 			var vec = (newPosition - shellPositionVector2).normalized;
-			newPosition = shellPositionVector2 + (vec * currentShell.commandRange);
+			newPosition = shellPositionVector2 + (vec * currentShell.Aura.range);
 		}
 		transform.position = new Vector3(newPosition.x, transform.position.y, newPosition.y);
 	}
@@ -127,5 +127,6 @@ public class ShellCameraSwitcher : MonoBehaviour {
 		currentShell.IsActive = false;
 		currentShell = null;
 		inMobileShell = true;
+		mobileShell.GetComponent<CommandShell>().IsActive = true;
 	}
 }
