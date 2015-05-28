@@ -3,11 +3,10 @@ using System.Collections;
 
 public class ShellCameraSwitcher : MonoBehaviour {
 	public float cameraPanSpeed;
-	public Transform mobileShell;
 	public Vector3 commandShellViewOffset;
 
 	private CommandShell[] availableShells;
-	private CommandShell currentShell;
+	public CommandShell currentShell;
 	private int currentShellIndex;
 	private bool inMobileShell;
 	private float mobileRotateX;
@@ -125,8 +124,14 @@ public class ShellCameraSwitcher : MonoBehaviour {
 	{
 		currentShellIndex = -1;
 		currentShell.IsActive = false;
-		currentShell = null;
+		currentShell = mobileShell.GetComponent<CommandShell>();
 		inMobileShell = true;
 		mobileShell.GetComponent<CommandShell>().IsActive = true;
+	}
+
+	private Transform mobileShell {
+		get {
+			return FindObjectOfType<MobilityUpgrade>().transform;
+		}
 	}
 }

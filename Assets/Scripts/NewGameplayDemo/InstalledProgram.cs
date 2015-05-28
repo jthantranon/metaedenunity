@@ -7,6 +7,8 @@ public class InstalledProgram : MonoBehaviour {
 	public int processingPower;
 	public float decryptSpeed;
 
+	public int hitPoints = 10;
+
 	public bool placing;
 	public bool isPublic;
 

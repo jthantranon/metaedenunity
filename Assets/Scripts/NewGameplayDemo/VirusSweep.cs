@@ -4,6 +4,7 @@ using System.Collections;
 
 public class VirusSweep : MonoBehaviour {
 	private static readonly float sweepInterval = 30;
+	private static readonly int sweepDamage;
 
 	private float sweepTimer = sweepInterval;
 	private System.Random random = new System.Random();
@@ -44,7 +45,11 @@ public class VirusSweep : MonoBehaviour {
 			if(random.Next(100) > totalConcealmentRating)
 			{
 				Debug.Log("Program caught by scan");
-				Destroy(installedProgram.gameObject);
+				installedProgram.hitPoints -= sweepDamage;
+				if(installedProgram.hitPoints <= 0) {
+					Debug.Log("Program destroyed");
+					Destroy(installedProgram.gameObject);
+				}
 			}
 		}
 	}
