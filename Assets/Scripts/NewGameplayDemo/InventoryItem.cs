@@ -10,6 +10,7 @@ public class InventoryItem : MonoBehaviour {
 	private string itemName;
 	private Text text;
 	private CommandShell[] commandShells;
+	private PlayerStats playerStats;
 
 	public GameObject placementPrefab;
 
@@ -20,6 +21,7 @@ public class InventoryItem : MonoBehaviour {
 		button.onClick = new Button.ButtonClickedEvent();
 		button.onClick.AddListener(StartPlacement);
 		resources = FindObjectOfType<Resources>();
+		playerStats = FindObjectOfType<PlayerStats>();
 	}
 	
 	// Update is called once per frame
@@ -76,6 +78,7 @@ public class InventoryItem : MonoBehaviour {
 
 	void StartPlacement()
 	{
+		playerStats.ItemRemoved();
 		placing = true;
 		placementObject = (GameObject)Instantiate(placementPrefab);
 		placementObject.GetComponent<InstalledProgram>().placing = true;

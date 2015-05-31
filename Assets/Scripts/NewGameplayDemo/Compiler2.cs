@@ -10,6 +10,7 @@ public class Compiler2 : MonoBehaviour {
 	private GameObject compilingObjectPrefab;
 	private string compilingObjectName;
 	private GameObject compilerOptions;
+	private PlayerStats playerStats;
 
 	public GameObject inventoryContainer;
 	public GameObject placementPrefab;
@@ -31,6 +32,7 @@ public class Compiler2 : MonoBehaviour {
 		if(!installedProgram.IsOwned && !installedProgram.isPublic) {
 			compilerOptions.SetActive(false);
 		}
+		playerStats = FindObjectOfType<PlayerStats>();
 	}
 	
 	// Update is called once per frame
@@ -39,6 +41,7 @@ public class Compiler2 : MonoBehaviour {
 			compileTimer -= Time.deltaTime;
 			if(compileTimer <= 0)
 			{
+				playerStats.ItemAdded();
 				compiling = false;
 				progressBar.gameObject.SetActive(false);
 				var newObject = (GameObject)Instantiate(placementPrefab);
@@ -59,9 +62,11 @@ public class Compiler2 : MonoBehaviour {
 
 	public void BeginCompile()
 	{
-		compiling = true;
-		compileTimer = compileSpeed;
-		progressBar.gameObject.SetActive(true);
+		if(playerStats.currentInventorySize < playerStats.maxInventorySize) {
+			compiling = true;
+			compileTimer = compileSpeed;
+			progressBar.gameObject.SetActive(true);
+		}
 	}
 
 	public void CompileFileSystem()

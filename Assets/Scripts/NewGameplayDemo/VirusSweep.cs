@@ -28,8 +28,14 @@ public class VirusSweep : MonoBehaviour {
 	}
 
 	void PerformSweep() {
+		var stealthFields = FindObjectsOfType<StealthField>();
+		SweepInstalledPrograms(stealthFields);
+		SweepCommandShells(stealthFields);
+	}
+
+	void SweepInstalledPrograms(StealthField[] stealthFields)
+	{
 		var installedPrograms = FindObjectsOfType(typeof(InstalledProgram));
-		var stealthFields = FindObjectsOfType(typeof(StealthField));
 		for(var i = 0; i < installedPrograms.Length; ++i)
 		{
 			var installedProgram = (InstalledProgram)installedPrograms[i];
@@ -49,6 +55,33 @@ public class VirusSweep : MonoBehaviour {
 				if(installedProgram.hitPoints <= 0) {
 					Debug.Log("Program destroyed");
 					Destroy(installedProgram.gameObject);
+				}
+			}
+		}
+	}
+
+	void SweepCommandShells(StealthField[] stealthFields)
+	{
+		var commandShells = FindObjectsOfType(typeof(CommandShell));
+		for(var i = 0; i < commandShells.Length; ++i)
+		{
+			var commandShell = (CommandShell)commandShells[i];
+			var totalConcealmentRating = commandShell.concealmentRating;
+			foreach(StealthField stealthField in stealthFields) {
+				var range = stealthField.Aura.range;
+				if(Vector3.SqrMagnitude(commandShell.transform.position - stealthField.transform.position) 
+				   < (range * range))
+				{
+					totalConcealmentRating += stealthField.concealmentAmount;
+				}
+			}
+			if(random.Next(100) > totalConcealmentRating)
+			{
+				Debug.Log("Program caught by scan");
+				commandShell.hitPoints -= sweepDamage;
+				if(commandShell.hitPoints <= 0) {
+					Debug.Log("Program destroyed");
+					Destroy(commandShell.gameObject);
 				}
 			}
 		}
