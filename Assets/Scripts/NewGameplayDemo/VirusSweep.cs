@@ -3,8 +3,8 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class VirusSweep : MonoBehaviour {
-	private static readonly float sweepInterval = 30;
-	private static readonly int sweepDamage;
+	private static readonly float sweepInterval = 10;
+	private static readonly int sweepDamage = 5;
 
 	private float sweepTimer = sweepInterval;
 	private System.Random random = new System.Random();
@@ -65,6 +65,7 @@ public class VirusSweep : MonoBehaviour {
 		var commandShells = FindObjectsOfType(typeof(CommandShell));
 		for(var i = 0; i < commandShells.Length; ++i)
 		{
+			Debug.Log("Shell being swept");
 			var commandShell = (CommandShell)commandShells[i];
 			var totalConcealmentRating = commandShell.concealmentRating;
 			foreach(StealthField stealthField in stealthFields) {
@@ -83,6 +84,8 @@ public class VirusSweep : MonoBehaviour {
 					Debug.Log("Program destroyed");
 					Destroy(commandShell.gameObject);
 				}
+			} else {
+				Debug.Log ("Evaded damage");
 			}
 		}
 	}
