@@ -25,6 +25,9 @@ public class PlayerStats : MonoBehaviour {
 			maxInventorySize++;
 			UpdateInventoryText();
 			UpdateResearchPointsText();
+			Debug.Log ("Inventory upgraded!");
+		} else {
+			Debug.LogWarning ("Not enough points!");
 		}
 	}
 
