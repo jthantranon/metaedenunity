@@ -73,7 +73,7 @@ public class Compiler2 : MonoBehaviour {
 	{
 		if(!compiling) {
 			compilingObjectPrefab = fileSystemPrefab;
-			compilingObjectName = "File System";
+			compilingObjectName = "Memory Unit";
 			BeginCompile();
 		}
 	}
@@ -82,7 +82,7 @@ public class Compiler2 : MonoBehaviour {
 	{
 		if(!compiling) {
 			compilingObjectPrefab = shellPrefab;
-			compilingObjectName = "Shell";
+			compilingObjectName = "Processing Unit";
 			BeginCompile();
 		}
 	}
@@ -91,7 +91,7 @@ public class Compiler2 : MonoBehaviour {
 	{
 		if(!compiling) {
 			compilingObjectPrefab = currencyMinerPrefab;
-			compilingObjectName = "Currency Miner";
+			compilingObjectName = "Bit Miner";
 			BeginCompile();
 		}
 	}
@@ -100,7 +100,7 @@ public class Compiler2 : MonoBehaviour {
 	{
 		if(!compiling) {
 			compilingObjectPrefab = stealthFieldPrefab;
-			compilingObjectName = "Stealth Field";
+			compilingObjectName = "Stealth Tower";
 			BeginCompile();
 		}
 	}
