@@ -1,10 +1,11 @@
 fileFormatVersion: 2
 guid: caf2f8233a8784d92a706e779e4ae717
-timeCreated: 1431583463
+timeCreated: 1434174198
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - commandShellPrefab: {fileID: 154268, guid: bb95620750ba19e40be83527a80b209e, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

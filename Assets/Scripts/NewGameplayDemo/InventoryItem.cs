@@ -71,9 +71,9 @@ public class InventoryItem : MonoBehaviour {
 
 	public void SetItemName(string name)
 	{
-		itemName = name;
+		var installedProgram = placementPrefab.GetComponent<InstalledProgram>();
 		text = transform.FindChild("Text").gameObject.GetComponent<Text>();
-		text.text = "Install " + name;
+		text.text = "Install " + name + " (" + installedProgram.memory + "/" + installedProgram.processingPower + ")";
 	}
 
 	void StartPlacement()
