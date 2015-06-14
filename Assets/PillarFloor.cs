@@ -37,13 +37,14 @@ public class PillarFloor : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(animate) {
+			var timeChange = Time.unscaledTime;
+			var pillarComponent = (Pillar)null;
 			for(var i = 0; i < rowCount; ++i)
 			{
 				for(var j = 0; j < columnCount; ++j)
 				{
-					var pillarComponent = pillars[i, j];
-					var mag = pillarComponent.transform.position.magnitude;
-					pillarComponent.height = Mathf.Sin(Time.unscaledTime + mag);
+					pillarComponent = pillars[i, j];
+					pillarComponent.height = Mathf.Sin(timeChange + pillarComponent.transform.position.magnitude);
 				}
 			}
 		}
